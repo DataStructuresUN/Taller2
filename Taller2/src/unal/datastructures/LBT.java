@@ -70,8 +70,8 @@ public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 		z.makeTree( new Integer( 2 ), a, a );
 		x.makeTree( new Integer( 3 ), y, z );
 		w.makeTree(new Integer ( 6 ), a, a );
-		v.makeTree(new Integer ( 7 ), a, a );
-		z.makeTree(new Integer ( 5 ), v, w );
+		//v.makeTree(new Integer ( 7 ), a, a );
+		z.makeTree(new Integer ( 5 ), a, w );
 		y.makeTree( new Integer( 4 ), x, z );
 		
 
@@ -105,5 +105,6 @@ public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 		System.out.println();
 		System.out.println( "Level order sequence is " );
 		y.levelOrderOutput( );
+		System.out.println();
 	}
 }
