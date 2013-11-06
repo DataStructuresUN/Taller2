@@ -6,6 +6,7 @@ public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 {
 	static Method maxElement;
 	static Method minElement;
+	static Method reverse;
 	
 	static
 	{
@@ -14,6 +15,7 @@ public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 			Class<LBT> lbt = LBT.class;
 			maxElement = lbt.getMethod("maxElement", BinaryTreeNode.class);
 			minElement = lbt.getMethod("maxElement", BinaryTreeNode.class);
+			reverse = lbt.getMethod("reverse", BinaryTreeNode.class);
 		}
 		catch(Exception e)
 		{
@@ -23,7 +25,7 @@ public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 	
 	public boolean isFull()
 	{
-		return (size( ) == ( int ) Math.pow( 2.0, ( double ) height( ) ) - 1 );
+		return ( size( ) == ( int ) Math.pow( 2.0, ( double ) height( ) ) - 1 );
 	}
 	
 	public void maxElement(Method visit)
@@ -33,6 +35,27 @@ public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 	}
 
 //	static <T> getMax(BinaryTreeNode<T> t)
+	
+	public void reverse()
+	{
+		theReverse( root );
+	}
+	
+	static <T> void theReverse(BinaryTreeNode<T> n)
+	{
+		BinaryTreeNode<T> tmp = n.leftChild;
+		
+		if(n.leftChild == null || n.rightChild == null)
+			return;
+		else
+		{
+			n.leftChild = n.rightChild;
+			n.rightChild = tmp;
+			
+			theReverse(n.leftChild);
+			theReverse(n.rightChild);
+		}
+	}
 	
 	/** test program */
 	public static void main( String[] args )
@@ -75,5 +98,12 @@ public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 			System.out.println("The tree is full");
 		else
 			System.out.println("The tree is not full");
+		
+		System.out.println( "Level order sequence is " );
+		y.levelOrderOutput( );
+		y.reverse();
+		System.out.println();
+		System.out.println( "Level order sequence is " );
+		y.levelOrderOutput( );
 	}
 }
