@@ -1,6 +1,7 @@
 package unal.datastructures;
 
 import java.lang.reflect.*;
+import java.util.*;
 
 public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 {
@@ -30,11 +31,28 @@ public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 	
 	public void maxElement(Method visit)
 	{
-		LBT.visit = visit;
-//		getMax(root);
+		ArrayList<T> a = new ArrayList<>();
+		BinaryTreeNode<T> b = root;
+		
+		while(b != null)
+		{
+			try
+			{
+				visit.invoke(null, b);
+			}
+			catch(Exception e)
+			{
+				System.out.println(e);
+			}
+			
+			if(b.leftChild != null)
+				a.add(b.leftChild.element);
+			if(b.rightChild != null)
+				a.add(b.rightChild.element);
+			
+			Collections.sort(a);
+		}
 	}
-
-//	static <T> getMax(BinaryTreeNode<T> t)
 	
 	public void reverse()
 	{
@@ -107,4 +125,9 @@ public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 		y.levelOrderOutput( );
 		System.out.println();
 	}
+}
+
+class ExtendedBTN<T extends Comparable<T>> extends BinaryTreeNode<T>
+{
+	
 }
