@@ -3,7 +3,7 @@ package unal.datastructures;
 import java.lang.reflect.*;
 import java.util.*;
 
-public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
+public class LBT<T extends Comparable<T>> extends LinkedBinaryTree<T> implements BinaryTree<T>
 {
 	static Method maxElement;
 	static Method minElement;
@@ -29,29 +29,60 @@ public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 		return ( size( ) == ( int ) Math.pow( 2.0, ( double ) height( ) ) - 1 );
 	}
 	
-	public void maxElement(Method visit)
+	public T maxElement()
 	{
-		ArrayList<T> a = new ArrayList<>();
-		BinaryTreeNode<T> b = root;
+		return (root == null) ? null : getMax(root);		
+	}
+	
+	static <T extends Comparable<T>> T getMax(BinaryTreeNode<T> b)
+	{
+		T max = ( T ) b.element;
+		T leftNode = max;
+		T rightNode = max;
 		
-		while(b != null)
+		if(!(b.leftChild == null))
+			leftNode = getMax(b.leftChild);
+		if(!(b.rightChild == null))
+			rightNode = getMax(b.rightChild);
+		
+		if(leftNode.compareTo(rightNode) > 0)
 		{
-			try
-			{
-				visit.invoke(null, b);
-			}
-			catch(Exception e)
-			{
-				System.out.println(e);
-			}
-			
-			if(b.leftChild != null)
-				a.add(b.leftChild.element);
-			if(b.rightChild != null)
-				a.add(b.rightChild.element);
-			
-			Collections.sort(a);
+			if(leftNode.compareTo(max) > 0)
+				max = leftNode;	
 		}
+		else
+			if(rightNode.compareTo(max) > 0)
+				max = rightNode;
+		
+		return max;
+	}
+	
+	public T minElement()
+	{
+		return (root == null) ? null : getMin(root);		
+	}
+	
+	static <T extends Comparable<T>> T getMin(BinaryTreeNode<T> b)
+	{
+		T min = ( T ) b.element;
+		T leftNode = min;
+		T rightNode = min;
+		
+		if(!(b.leftChild == null))
+			leftNode = getMin(b.leftChild);
+		if(!(b.rightChild == null))
+			rightNode = getMin(b.rightChild);
+		
+		if(leftNode.compareTo(rightNode) < 0)
+		{
+			if(leftNode.compareTo(min) < 0)
+				min = leftNode;	
+		}
+		else
+			if(rightNode.compareTo(min) < 0)
+				min = rightNode;
+		
+		return min;
 	}
 	
 	public void reverse()
@@ -87,9 +118,9 @@ public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 		y.makeTree( new Integer( 1 ), a, a );
 		z.makeTree( new Integer( 2 ), a, a );
 		x.makeTree( new Integer( 3 ), y, z );
-		w.makeTree(new Integer ( 6 ), a, a );
-		//v.makeTree(new Integer ( 7 ), a, a );
-		z.makeTree(new Integer ( 5 ), a, w );
+		w.makeTree( new Integer( 6 ), a, a );
+		v.makeTree( new Integer( 7 ), a, a );
+		z.makeTree( new Integer( 5 ), a, w );
 		y.makeTree( new Integer( 4 ), x, z );
 		
 
@@ -106,7 +137,7 @@ public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 
 		System.out.println( "Level order sequence is " );
 		y.levelOrderOutput( );
-		System.out.println( );
+		System.out.println( ); 
 
 		System.out.println( "Number of nodes = " + y.size( ) );
 
@@ -124,10 +155,8 @@ public class LBT<T> extends LinkedBinaryTree<T> implements BinaryTree<T>
 		System.out.println( "Level order sequence is " );
 		y.levelOrderOutput( );
 		System.out.println();
+		
+		System.out.println(y.maxElement());
+		System.out.println(y.minElement());
 	}
-}
-
-class ExtendedBTN<T extends Comparable<T>> extends BinaryTreeNode<T>
-{
-	
 }
