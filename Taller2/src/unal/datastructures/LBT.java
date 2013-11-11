@@ -8,6 +8,8 @@ public class LBT<T extends Comparable<T>> extends LinkedBinaryTree<T> implements
 	static Method maxElement;
 	static Method minElement;
 	static Method reverse;
+	static Method numLeaves;
+	static int leavesCount;
 	
 	static
 	{
@@ -106,6 +108,35 @@ public class LBT<T extends Comparable<T>> extends LinkedBinaryTree<T> implements
 		}
 	}
 	
+	public int numLeaves() throws NoSuchMethodException
+	{
+	    count=0;
+	    preOrder(LBT.class.getMethod("getLeaves", BinaryTreeNode.class));
+	    return count;
+	}
+	
+	public static <T> void getLeaves(BinaryTreeNode<T> t)
+	{ 
+	    if(isLeave(t))
+	        count++;                   
+	}
+	
+	public static boolean isLeave(BinaryTreeNode t)
+	{
+	    if (t.rightChild == null && t.leftChild == null)
+	        return true;
+	    return false; 
+	}
+	
+//	public static <T> LinkedBinaryTree<T> createTree(T[] preorder, T[] inorder)
+//	{
+//		LinkedBinaryTree<T> newTree;
+//		ArrayList<T> preArr
+//		
+//		
+//		return newTree;
+//	}
+//	
 	/** test program */
 	public static void main( String[] args )
 	{
@@ -120,7 +151,7 @@ public class LBT<T extends Comparable<T>> extends LinkedBinaryTree<T> implements
 		x.makeTree( new Integer( 3 ), y, z );
 		w.makeTree( new Integer( 6 ), a, a );
 		v.makeTree( new Integer( 7 ), a, a );
-		z.makeTree( new Integer( 5 ), a, w );
+		z.makeTree( new Integer( 5 ), v, w );
 		y.makeTree( new Integer( 4 ), x, z );
 		
 
@@ -158,5 +189,14 @@ public class LBT<T extends Comparable<T>> extends LinkedBinaryTree<T> implements
 		
 		System.out.println(y.maxElement());
 		System.out.println(y.minElement());
+		
+		try 
+		{
+			System.out.println(y.numLeaves());
+		}
+		catch (NoSuchMethodException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 }
