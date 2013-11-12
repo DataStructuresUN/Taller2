@@ -11,6 +11,11 @@ public class LBT<T extends Comparable<T>> extends LinkedBinaryTree<T> implements
 	static Method numLeaves;
 	static int leavesCount;
 
+	public ArrayList<Integer> aarr=new ArrayList<>(); //auxiliar array
+	public ArrayList<BinaryTreeNode<T>> btn=new ArrayList<>(); //auxiliar BTN array 
+	public static Stack<BinaryTreeNode> btnstack1=new Stack<>();
+	public static Stack<BinaryTreeNode> btnstack2=new Stack<>(); 
+
 	static
 	{
 		try
@@ -129,14 +134,69 @@ public class LBT<T extends Comparable<T>> extends LinkedBinaryTree<T> implements
 	}
 
 	//TODO: Pendiente
-	static <T extends Comparable<T>> LBT<T> createTree(T[] preOrder, T[] inOrder)
+	public LBT<T> createTree(T[] preOrder, T[] inOrder)
 	{
-		LBT<T> newTree = new LBT<>(),
-				a = new LBT<>(),
-				b = new LBT<>();
-				
-		newTree.makeTree(preOrder[0], a, a);
-				
+		LBT<T> newTree = new LBT<>();
+//		LBT<T> newTree = new LBT<>(),
+//				a = new LBT<>(),
+//				b = new LBT<>();
+//				
+//		newTree.makeTree(preOrder[0], a, a);
+//				
+//		return newTree;
+		
+		T root = preOrder[0];
+		int rootIndex = -1;
+		
+		for(int i = 0; i < inOrder.length; i++)
+		{
+			if(inOrder[i] == root)
+			{
+				rootIndex = i;
+				break;
+			}
+		}
+		
+		T[] rightInOrder = (T[]) new Comparable [inOrder.length - rootIndex - 1];
+		System.arraycopy(inOrder, rootIndex + 1, rightInOrder, 0, rootIndex - 1);
+		
+		T[] leftInOrder = (T[]) new Comparable [rootIndex];
+		System.arraycopy(inOrder, 0, leftInOrder, 0, rootIndex);
+		
+		T[] leftPreOrder = (T[]) new Comparable [leftInOrder.length + 1];
+		T[] rightPreOrder = (T[]) new Comparable [rightInOrder.length];
+		
+		System.arraycopy(preOrder, 1, leftPreOrder, 0, leftInOrder.length + 1);
+		
+		int rpIdx = -1;
+		
+		for(int i = 0; i < preOrder.length; i++)
+		{
+			if(preOrder[i] == leftPreOrder[leftPreOrder.length - 1])
+			{
+				rpIdx = i + 1;
+				break;
+			}
+		}
+		
+		System.arraycopy(preOrder, rpIdx, rightPreOrder, 0, preOrder.length - rpIdx);
+		
+		System.out.println(leftInOrder.length);
+		for(T q : leftInOrder)
+			System.out.println(q);
+		System.out.println();
+		System.out.println(rightInOrder.length);
+		for(T q : rightInOrder)
+			System.out.println(q);
+		System.out.println();
+		System.out.println(leftPreOrder.length);
+		for(T q : leftPreOrder)
+			System.out.println(q);
+		System.out.println();
+		System.out.println(rightPreOrder.length);
+		for(T q : rightPreOrder)
+			System.out.println(q);
+		
 		return newTree;
 	}
 	
@@ -223,5 +283,11 @@ public class LBT<T extends Comparable<T>> extends LinkedBinaryTree<T> implements
 		
 		q.levelOrderOutput();
 		System.out.println(y.compare(q));
+		
+		Integer[] pre = {7, 10, 4, 3, 1, 2, 8, 11};
+		Integer[] in = {4, 10, 3, 1, 7, 11, 8, 2};
+		
+		LBT<Integer> s = new LBT<>();
+		s.createTree(pre, in);
 	}
 }
